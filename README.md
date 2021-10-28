@@ -1,6 +1,6 @@
-# Music Habits
+# Github Trackr
 
-The front end for your ondemand spotify year in review needs.
+The front end for your github tracking your employee needs.
 
 ## Preview
 
