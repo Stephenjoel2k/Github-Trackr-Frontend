@@ -39,7 +39,7 @@
         }
       },
       async getUserOrgsFromAPI(queryName){
-        const url = "http://localhost:3000/api/user/orgs"
+        const url = "https://githubtrackr.herokuapp.com/api/user/orgs"
         const response = await axios.get(url, {
             headers: {
                 Authorization: "token " + localStorage.access_token,

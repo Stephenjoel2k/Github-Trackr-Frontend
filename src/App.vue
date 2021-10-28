@@ -53,7 +53,7 @@ export default {
           localStorage.removeItem("access_token");
           localStorage.removeItem("expiry");
           window.location.href =
-            "http://localhost:3000/auth/login";
+            "https://githubtrackr.herokuapp.com/auth/login";
         }
       }
     }

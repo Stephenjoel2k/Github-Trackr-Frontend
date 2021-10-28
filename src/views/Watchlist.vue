@@ -39,7 +39,7 @@
       },
       async getUserWatchlistFromAPI(queryName){
 
-        const url = "http://localhost:3000/api/user/watchlist";
+        const url = "https://githubtrackr.herokuapp.com/api/user/watchlist";
         const response = await axios.get(url, {
             headers: {
                 Authorization: "token " + localStorage.access_token,

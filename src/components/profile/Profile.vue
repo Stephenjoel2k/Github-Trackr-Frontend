@@ -39,7 +39,7 @@ export default {
             }
         },
         async getUserFromAPI(){
-          const url = "http://localhost:3000/api/user"
+          const url = "https://githubtrackr.herokuapp.com/api/user"
             const response = await axios.get(url, {
                 headers: {
                     Authorization: "token " + localStorage.access_token,

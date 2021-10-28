@@ -9,7 +9,7 @@
           <v-btn
             class="my-5"
             color="grey"
-            href="http://localhost:3000/auth/login"
+            href="https://githubtrackr.herokuapp.com/auth/login"
           >
             <v-icon left>mdi-import</v-icon>
             <span>Github</span>
@@ -43,7 +43,7 @@ export default {
           localStorage.removeItem("access_token");
           localStorage.removeItem("expiry");
           window.location.href =
-            "http://localhost:3000/auth/login";
+            "https://githubtrackr.herokuapp.com/auth/login";
         } else {
           this.$router.push("/dashboard");
         }

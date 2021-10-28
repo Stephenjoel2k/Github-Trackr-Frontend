@@ -40,7 +40,7 @@
       },
       async getUserReposFromAPI(queryName){
 
-        const url = "http://localhost:3000/api/user/repos";
+        const url = "https://githubtrackr.herokuapp.com/api/user/repos";
         const response = await axios.get(url, {
             headers: {
                 Authorization: "token " + localStorage.access_token,

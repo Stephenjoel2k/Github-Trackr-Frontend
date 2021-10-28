@@ -54,110 +54,37 @@ export default {
         routeTo(route){
             this.$router.push(route);
         },
-      async setRandom(){
-        var success = false;
-        while(!success){
-            var length = this.items.length;
-            var random1 = Math.floor(Math.random() * Math.floor(length-1));
-            var random2 = Math.floor(Math.random() * Math.floor(length-1));
-            if(random1 == random2 && random1 < 25) random2 = random2 + 3;
-            else random2 = random2 - 5;
-            var randomArtist1 = this.items[random1];
-            var randomArtist2 = this.items[random2];
-            if((randomArtist1 && randomArtist1.images) && (randomArtist2 && randomArtist2.images)) {
-                success = true;
-                var image1 = randomArtist1.images[0].url;
-                var image2 = randomArtist2.images[0].url;
-                var url = "https://yourmusichabit.herokuapp.com/api/miscellaneous/colors";
-                var response = await axios.get(url, {
+        async getUserTop(){
+                var queryName = "artists" + this.term;
+                const artist = sessionStorage.getItem(queryName);
+            if(artist){
+                await this.getUserTopFromLocal(queryName);
+            }else{
+                await this.getUserTopFromAPI(queryName);
+            }
+            },
+        async getUserTopFromAPI(queryName){
+            const url = "https://yourmusichabit.herokuapp.com/api/user/top-artists?term=" + this.term;
+                const response = await axios.get(url, {
                     headers: {
+                        Authorization: "Bearer " + localStorage.access_token,
                         "Access-Control-Allow-Origin": "*",
-                    },
-                    params: {
-                        image1, image2
                     }
                 });
-                var imageColors = response.data.data;
-                this.random1 = image1;
-                this.random2 = image2;
-                this.imageColors = imageColors;
-                const new_color1 = this.LightenDarkenColor(imageColors.image2[1].hex, -10);
-                const new_color2 = this.LightenDarkenColor(imageColors.image2[1].hex, 55);
-                this.bgc.background = `linear-gradient( 135deg,${new_color1}, ${new_color2})` 
-                this.bgc.color = this.LightenDarkenColor(imageColors.image1[0].hex, 200);
-            } 
+            const data = response.data.data;
+            sessionStorage.setItem(queryName, JSON.stringify(data));
+            this.items = data.items;
+        },
+        async getUserTopFromLocal(queryName){
+            this.items = JSON.parse(sessionStorage.getItem(queryName)).items;
+        },
+            
+        },
+        async mounted(){
+            this.computeGreeting();
+            await this.getUserTop();
+            this.setRandom();
         }
-    },
-    LightenDarkenColor(col,amt) {
-            var usePound = false;
-            if ( col[0] == "#" ) {
-                col = col.slice(1);
-                usePound = true;
-            }
-
-            var num = parseInt(col,16);
-
-            var r = (num >> 16) + amt;
-
-            if ( r > 255 ) r = 255;
-            else if  (r < 0) r = 0;
-
-            var b = ((num >> 8) & 0x00FF) + amt;
-
-            if ( b > 255 ) b = 255;
-            else if  (b < 0) b = 0;
-
-            var g = (num & 0x0000FF) + amt;
-
-            if ( g > 255 ) g = 255;
-            else if  ( g < 0 ) g = 0;
-
-            return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-    },
-    isMyColorBright(color){
-            var r = color.red;
-            var g = color.green;
-            var b = color.blue;
-
-            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-
-            if (luma < 40) {
-                console.log("too dark")
-            }else{
-                console.log("bright")
-            }
-    },
-    async getUserTop(){
-         var queryName = "artists" + this.term;
-         const artist = sessionStorage.getItem(queryName);
-        if(artist){
-          await this.getUserTopFromLocal(queryName);
-        }else{
-          await this.getUserTopFromAPI(queryName);
-        }
-      },
-    async getUserTopFromAPI(queryName){
-        const url = "https://yourmusichabit.herokuapp.com/api/user/top-artists?term=" + this.term;
-            const response = await axios.get(url, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.access_token,
-                    "Access-Control-Allow-Origin": "*",
-                }
-            });
-        const data = response.data.data;
-        sessionStorage.setItem(queryName, JSON.stringify(data));
-        this.items = data.items;
-    },
-    async getUserTopFromLocal(queryName){
-        this.items = JSON.parse(sessionStorage.getItem(queryName)).items;
-    },
-      
-    },
-    async mounted(){
-        this.computeGreeting();
-      await this.getUserTop();
-      this.setRandom();
-    }
 }
 </script>
 

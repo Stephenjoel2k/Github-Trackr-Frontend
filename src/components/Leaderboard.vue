@@ -59,7 +59,7 @@ export default {
             await this.updateStats();
         },
         async getStatsFromAPI(org_name){
-          const url = "http://localhost:3000/api/public/orgs/" + org_name + "/stats";
+          const url = "https://githubtrackr.herokuapp.com/api/public/orgs/" + org_name + "/stats";
             const response = await axios.get(url, {
                 headers: {
                     Authorization: "token " + localStorage.access_token,
