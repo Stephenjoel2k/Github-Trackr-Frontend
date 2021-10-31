@@ -4,4 +4,4 @@ The front end for your github tracking your employee needs.
 
 ## Preview
 
-https://githubtrackr.herokuapp.com/
+https://githubtrackr.netlify.app
